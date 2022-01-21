@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "609031571177",
+    "project_id": "paymeback-6831a",
+    "storage_bucket": "paymeback-6831a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609031571177:android:c27ae15aa38270f39cd278",
+        "android_client_info": {
+          "package_name": "com.example.paymeback"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "609031571177-q8ieko32f18fu06jc5ltnr88h3paa960.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paymeback",
+            "certificate_hash": "0a2ab0cfb4cbb4b859eba92f0fd837dd8a8ab9d2"
+          }
+        },
+        {
+          "client_id": "609031571177-vjtk4pkhp0gdvh3b6o92fkrfcpl6gjqk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlit1uJjZcOsN_l2XVAqXX6w5K7m7DszA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "609031571177-vjtk4pkhp0gdvh3b6o92fkrfcpl6gjqk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

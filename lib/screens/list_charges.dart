@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paymeback/components/charge_card.dart';
 
 class ListChargesScreen extends StatelessWidget {
   const ListChargesScreen({Key? key}) : super(key: key);
@@ -12,7 +13,95 @@ class ListChargesScreen extends StatelessWidget {
           primary: const Color(0xFF5DB075),
         ),
         onPressed: () {},
-        child: const Text('Listar cobranças'),
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: const [
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            ),
+            ChargeCard(
+              debtorName: "Artur Santiago",
+              endDate: "10/10/2022",
+              title: "Lanche da Tarde",
+              value: 20.34,
+            )
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

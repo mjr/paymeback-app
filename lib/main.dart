@@ -5,11 +5,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'routes.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
-
 class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   _AppState createState() => _AppState();
 }
@@ -20,23 +21,21 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _initialization,
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Material(
-            child: Center(
-              child: Text(
-                'Não foi possível inicializar o Firebase',
-                textDirection: TextDirection.ltr
+        future: _initialization,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Material(
+              child: Center(
+                child: Text('Não foi possível inicializar o Firebase',
+                    textDirection: TextDirection.ltr),
               ),
-            ),
-          );
-        } else if (snapshot.connectionState == ConnectionState.done) {
-          return Routes();
-        } else {
-          return Material(child: Center(child: CircularProgressIndicator()));
-        }
-      }
-    );
+            );
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            return const Routes();
+          } else {
+            return const Material(
+                child: Center(child: CircularProgressIndicator()));
+          }
+        });
   }
 }

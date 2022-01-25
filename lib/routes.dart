@@ -5,10 +5,10 @@ import 'package:paymeback/screens/splash.dart';
 import 'package:paymeback/screens/login.dart';
 import 'package:paymeback/screens/register.dart';
 import 'package:paymeback/screens/home.dart';
-import 'package:paymeback/screens/new-charge.dart';
+import 'package:paymeback/screens/new_charge.dart';
 
 class Routes extends StatelessWidget {
-  const Routes({ Key? key }) : super(key: key);
+  const Routes({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

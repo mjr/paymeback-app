@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:paymeback/auth/user.dart';
 import 'package:paymeback/screens/list_charges.dart';
 import 'package:paymeback/screens/profile.dart';

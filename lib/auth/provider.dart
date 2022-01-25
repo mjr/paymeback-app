@@ -15,15 +15,14 @@ extension IsOk on http.Response {
 }
 
 const String localStorageKey = '__auth_provider_token__';
-final String authorizationCredentials = 'Basic ${base64Encode(utf8.encode(
-  "${dotenv.env['PUBLIC_CLIENT_ID_PRIVATE']}:${dotenv.env['PUBLIC_CLIENT_SECRET_PRIVATE']}"
-))}';
+final String authorizationCredentials =
+    'Basic ${base64Encode(utf8.encode("${dotenv.env['PUBLIC_CLIENT_ID_PRIVATE']}:${dotenv.env['PUBLIC_CLIENT_SECRET_PRIVATE']}"))}';
 
 class AuthProvider {
   User? _user;
 
   User get user => _user!;
-  final _storage = new FlutterSecureStorage();
+  final _storage = const FlutterSecureStorage();
 
   void setUser(BuildContext context, User? user) {
     if (user != null) {
@@ -42,7 +41,7 @@ class AuthProvider {
   }
 
   Future<void> currentUser(BuildContext context) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     String? jsonUser = await _storage.read(key: 'user');
     if (jsonUser != null) {
       setUser(context, User.fromJson(jsonUser));
@@ -52,23 +51,24 @@ class AuthProvider {
     }
   }
 
-  Future<Map<String, dynamic>> handleUserResponse(Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> handleUserResponse(
+      Map<String, dynamic> data) async {
     await _storage.write(key: localStorageKey, value: data['user']['token']);
     return data['user'];
   }
 
   Future<Map<String, dynamic>> login(String? username, String? password) async {
-    return client(
-      'login',
-      { 'username': username, 'password': password }
-    ).then(handleUserResponse);
+    return client('login', {'username': username, 'password': password})
+        .then(handleUserResponse);
   }
 
-  Future<Map<String, dynamic>> register(String? fullName, String? username, String? password) async {
-    return client(
-      'register',
-      {'fullName': fullName, 'username': username, 'password': password }
-    ).then(handleUserResponse);
+  Future<Map<String, dynamic>> register(
+      String? fullName, String? username, String? password) async {
+    return client('register', {
+      'fullName': fullName,
+      'username': username,
+      'password': password
+    }).then(handleUserResponse);
   }
 
   Future<void> logout() async {
@@ -78,11 +78,15 @@ class AuthProvider {
 
   final String? authURL = dotenv.env['APP_AUTH_URL'];
 
-  Future<Map<String, dynamic>> client(String endpoint, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> client(
+      String endpoint, Map<String, dynamic> data) async {
     return await http.post(
-      Uri.parse('${authURL}/${endpoint}/'),
+      Uri.parse('$authURL/$endpoint/'),
       body: jsonEncode(data),
-      headers: { 'Authorization': authorizationCredentials, 'Content-Type': 'application/json' },
+      headers: {
+        'Authorization': authorizationCredentials,
+        'Content-Type': 'application/json'
+      },
     ).then((response) async {
       final data = await jsonDecode(response.body);
       if (response.ok) {

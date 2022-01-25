@@ -5,9 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:paymeback/auth/provider.dart';
 import 'package:paymeback/auth/user.dart';
 
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({ Key? key }) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,23 +14,23 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
-        child: LoginForm()
+        child: RegisterForm()
       ),
     );
   }
 }
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({ Key? key }) : super(key: key);
+class RegisterForm extends StatefulWidget {
+  const RegisterForm({ Key? key }) : super(key: key);
 
   @override
-  LoginFormState createState() => LoginFormState();
+  RegisterFormState createState() => RegisterFormState();
 }
 
-class LoginFormState extends State<LoginForm> {
+class RegisterFormState extends State<RegisterForm> {
   final auth = AuthProvider();
   final _formKey = GlobalKey<FormState>();
-  String? _username, _password;
+  String? _fullName, _username, _password;
   bool _isObscure = true;
   bool _isLoading = false;
   bool _isError = false;
@@ -45,15 +44,64 @@ class LoginFormState extends State<LoginForm> {
         children: [
           Padding(
             padding: EdgeInsets.only(top: 40, bottom: 20),
-            child: Center(
-              child: Text(
-                'Entrar',
-                style: GoogleFonts.inter(
-                  fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black
-                )
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.close, color: Color.fromRGBO(189, 189, 189, 1.0)),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'login');
+                  },
+                ),
+                Text(
+                  'Cadastre-se',
+                  style: GoogleFonts.inter(
+                    fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black
+                  )
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, 'login');
+                  },
+                  child: Text(
+                    'Entrar',
+                    style: TextStyle(color: Color(0xFF5DB075), fontSize: 15),
+                  ),
+                ),
+              ]
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: TextFormField(
+              autofocus: true,
+              onChanged: (value) {
+                if (value != null) setState(() { _fullName = value; });
+              },
+              decoration: InputDecoration(
+                hintText: 'Nome',
+                hintStyle: TextStyle(color: Color(0xFFBDBDBD)),
+                contentPadding: EdgeInsets.all(16),
+                filled: true,
+                fillColor: Color(0xFFF6F6F6),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Color(0xFFE8E8E8),
+                    width: 1.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: Colors.green,
+                    width: 2.0,
+                  ),
+                ),
               ),
             ),
           ),
+          SizedBox(height: 2),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
@@ -88,7 +136,7 @@ class LoginFormState extends State<LoginForm> {
           Padding(
             padding: EdgeInsets.all(8.0),
             child: TextFormField(
-              obscureText: true,
+              obscureText: _isObscure,
               onChanged: (value) {
                 if (value != null) setState(() { _password = value; });
               },
@@ -128,7 +176,7 @@ class LoginFormState extends State<LoginForm> {
               setState(() { _isError = false; _isLoading = true; });
 
               try {
-                final response = await auth.login(_username, _password);
+                final response = await auth.register(_fullName, _username, _password);
                 final user = User(
                   fullName: response['fullName'],
                   nickname: response['nickname'],
@@ -146,7 +194,7 @@ class LoginFormState extends State<LoginForm> {
             color: Color(0xFF5DB075),
             child: SizedBox(
               width: double.infinity,
-              child: Text(_isLoading ? 'Entrando...' : 'Entrar', textAlign: TextAlign.center),
+              child: Text(_isLoading ? 'Cadastrando...' : 'Cadastrar', textAlign: TextAlign.center),
             ),
             height: 51,
             minWidth: 600,
@@ -154,22 +202,8 @@ class LoginFormState extends State<LoginForm> {
           ),
           _isError ? Padding(
             padding: EdgeInsets.only(top: 10.0),
-            child: Text('Usuário ou senha inválidos', style: TextStyle(color: Colors.red)),
+            child: Text('Ocorreu um erro', style: TextStyle(color: Colors.red)),
           ) : SizedBox.shrink(),
-          Padding(
-            padding: EdgeInsets.only(top: 50.0),
-            child: Center(
-              child: FlatButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, 'register');
-                },
-                child: Text(
-                  'Não tem uma conta? Cadastre-se',
-                  style: TextStyle(color: Color(0xFF5DB075), fontSize: 15),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );

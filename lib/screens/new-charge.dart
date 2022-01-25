@@ -46,6 +46,22 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                 key: _formKey,
                 child: Column(
                   children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0, bottom: 2.0),
+                      child: Text('E-mail'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        autofocus: true,
+                        onChanged: (value) {},
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.email, color: Color.fromRGBO(50, 62, 72, 1.0)),
+                          contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                        ),
+                      ),
+                    ),
                     Input(
                       label: "Título",
                       icon: Icons.title,

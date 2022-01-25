@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Olá, ${widget.user.name}'),
+        title: Text('Olá, ${widget.user.fullName}'),
       ),
       body: screens[currentScreen],
       bottomNavigationBar: Container(

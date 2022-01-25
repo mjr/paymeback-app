@@ -35,7 +35,7 @@ class AuthProvider {
 
   Future<void> currentUser(BuildContext context) async {
     final instance = await SharedPreferences.getInstance();
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     if (instance.containsKey('user')) {
       final json = instance.get('user') as String;
       setUser(context, User.fromJson(json));

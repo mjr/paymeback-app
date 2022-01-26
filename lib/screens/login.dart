@@ -6,24 +6,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:paymeback/auth/provider.dart';
 import 'package:paymeback/auth/user.dart';
 
-
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({ Key? key }) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
-        child: LoginForm()
-      ),
+          padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
+          child: LoginForm()),
     );
   }
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({ Key? key }) : super(key: key);
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   LoginFormState createState() => LoginFormState();
@@ -47,12 +45,11 @@ class LoginFormState extends State<LoginForm> {
           Padding(
             padding: EdgeInsets.only(top: 40, bottom: 20),
             child: Center(
-              child: Text(
-                'Entrar',
-                style: GoogleFonts.inter(
-                  fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black
-                )
-              ),
+              child: Text('Entrar',
+                  style: GoogleFonts.inter(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black)),
             ),
           ),
           Padding(
@@ -60,7 +57,10 @@ class LoginFormState extends State<LoginForm> {
             child: TextFormField(
               autofocus: true,
               onChanged: (value) {
-                if (value != null) setState(() { _username = value; });
+                if (value != null)
+                  setState(() {
+                    _username = value;
+                  });
               },
               decoration: InputDecoration(
                 hintText: 'E-mail',
@@ -91,7 +91,10 @@ class LoginFormState extends State<LoginForm> {
             child: TextFormField(
               obscureText: true,
               onChanged: (value) {
-                if (value != null) setState(() { _password = value; });
+                if (value != null)
+                  setState(() {
+                    _password = value;
+                  });
               },
               decoration: InputDecoration(
                 hintText: 'Senha',
@@ -114,9 +117,12 @@ class LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 suffixIcon: IconButton(
-                  icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                  icon: Icon(
+                      _isObscure ? Icons.visibility : Icons.visibility_off),
                   onPressed: () {
-                    setState(() { _isObscure = !_isObscure; });
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
                   },
                 ),
               ),
@@ -126,7 +132,10 @@ class LoginFormState extends State<LoginForm> {
           MaterialButton(
             onPressed: () async {
               FocusScope.of(context).requestFocus(FocusNode());
-              setState(() { _isError = false; _isLoading = true; });
+              setState(() {
+                _isError = false;
+                _isLoading = true;
+              });
 
               try {
                 final response = await auth.login(_username, _password);
@@ -136,27 +145,38 @@ class LoginFormState extends State<LoginForm> {
                   token: response['token'],
                 );
                 auth.setUser(context, user);
-                setState(() { _isError = false; });
+                setState(() {
+                  _isError = false;
+                });
               } catch (err) {
-                setState(() { _isError = true; });
+                setState(() {
+                  _isError = true;
+                });
               } finally {
-                setState(() { _isLoading = false; });
+                setState(() {
+                  _isLoading = false;
+                });
               }
             },
             textColor: Colors.white,
             color: Color(0xFF5DB075),
             child: SizedBox(
               width: double.infinity,
-              child: Text(_isLoading ? 'Entrando...' : 'Entrar', textAlign: TextAlign.center),
+              child: Text(_isLoading ? 'Entrando...' : 'Entrar',
+                  textAlign: TextAlign.center),
             ),
             height: 51,
             minWidth: 600,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(100))),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(100))),
           ),
-          _isError ? Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: Text('Usuário ou senha inválidos', style: TextStyle(color: Colors.red)),
-          ) : SizedBox.shrink(),
+          _isError
+              ? Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Text('Usuário ou senha inválidos',
+                      style: TextStyle(color: Colors.red)),
+                )
+              : SizedBox.shrink(),
           Padding(
             padding: EdgeInsets.only(top: 50.0),
             child: Center(

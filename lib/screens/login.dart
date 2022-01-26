@@ -78,7 +78,7 @@ class LoginFormState extends State<LoginForm> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: Colors.green,
+                    color: Color(0xFF5DB075),
                     width: 2.0,
                   ),
                 ),
@@ -109,7 +109,7 @@ class LoginFormState extends State<LoginForm> {
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(
-                    color: Colors.green,
+                    color: Color(0xFF5DB075),
                     width: 2.0,
                   ),
                 ),

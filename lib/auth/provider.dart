@@ -8,11 +8,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'user.dart';
 
-extension IsOk on http.Response {
-  bool get ok {
-    return (statusCode ~/ 100) == 2;
-  }
-}
 
 const String localStorageKey = '__auth_provider_token__';
 final String authorizationCredentials = 'Basic ${base64Encode(utf8.encode(
@@ -37,8 +32,21 @@ class AuthProvider {
     }
   }
 
+  Future<String?> getToken() async {
+    return await _storage.read(key: localStorageKey);
+  }
+
   Future<void> saveUser(User user) async {
     await _storage.write(key: 'user', value: user.toJson());
+  }
+
+  Future<User?> getUser() async {
+    String? jsonUser = await _storage.read(key: 'user');
+    if (jsonUser == null) {
+      return null;
+    }
+
+    return User.fromJson(jsonUser);
   }
 
   Future<void> currentUser(BuildContext context) async {
@@ -53,7 +61,10 @@ class AuthProvider {
   }
 
   Future<Map<String, dynamic>> handleUserResponse(Map<String, dynamic> data) async {
-    await _storage.write(key: localStorageKey, value: data['user']['token']);
+    await _storage.write(
+      key: localStorageKey,
+      value: '${data["user"]["tokenType"]} ${data["user"]["token"]}'
+    );
     return data['user'];
   }
 
@@ -85,7 +96,7 @@ class AuthProvider {
       headers: { 'Authorization': authorizationCredentials, 'Content-Type': 'application/json' },
     ).then((response) async {
       final data = await jsonDecode(response.body);
-      if (response.ok) {
+      if ((response.statusCode ~/ 100) == 2) {
         return data;
       } else {
         return throw Exception(data);

@@ -42,7 +42,6 @@ class _ChargeListFilterState extends State<ChargeListFilterScreen> {
                         label: "Telefone",
                         hintText: "Digite o telefone do devedor",
                         inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
                           MaskedInputFormatter('(##)#####-####'),
                         ],
                         onChanged: (value) {}),

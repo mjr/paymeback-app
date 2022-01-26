@@ -360,7 +360,6 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                     child: TextFormField(
                                       keyboardType: TextInputType.phone,
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly,
                                         MaskedInputFormatter('(##)#####-####'),
                                       ],
                                       onChanged: (value) {

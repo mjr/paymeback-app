@@ -74,7 +74,7 @@ class _ListChargesState extends State<ListChargesScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailCharge(charge: charge)));
+                  builder: (context) => DetailChargeScreen(charge: charge)));
         },
         child: Padding(
           padding: const EdgeInsets.all(16.0),

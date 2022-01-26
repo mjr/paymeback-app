@@ -14,22 +14,21 @@ class ChargeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25),
-          side: const BorderSide(color: Color(0xFF5DB075), width: 2)),
-      child: InkWell(
-        splashColor: Colors.green.withAlpha(30),
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => DetailCharge(charge: charge)));
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          child: Column(
-            children: [
+        margin: const EdgeInsets.only(bottom: 16),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+            side: const BorderSide(color: Color(0xFF5DB075), width: 2)),
+        child: InkWell(
+          splashColor: Colors.green.withAlpha(30),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailChargeScreen(charge: charge)));
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            child: Column(children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
                 child: Row(
@@ -81,10 +80,8 @@ class ChargeCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
+            ]),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

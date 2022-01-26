@@ -178,6 +178,7 @@ class DetailChargeScreen extends StatelessWidget {
         floatingActionButton:
             Column(mainAxisAlignment: MainAxisAlignment.end, children: [
           FloatingActionButton(
+            heroTag: "Remover",
             onPressed: () {},
             backgroundColor: Colors.green,
             child: const Icon(Icons.delete),
@@ -186,6 +187,7 @@ class DetailChargeScreen extends StatelessWidget {
             height: 10,
           ),
           FloatingActionButton(
+            heroTag: "Compartilhar",
             onPressed: () {},
             backgroundColor: Colors.green,
             child: const Icon(Icons.share),

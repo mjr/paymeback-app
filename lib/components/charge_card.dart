@@ -17,7 +17,7 @@ class ChargeCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
-            side: const BorderSide(color: Color(0xFF5DB075), width: 2)),
+            side: const BorderSide(color: Color(0xbbbdbdbd), width: 1)),
         child: InkWell(
           splashColor: Colors.green.withAlpha(30),
           onTap: () {

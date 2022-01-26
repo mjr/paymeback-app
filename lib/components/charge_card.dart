@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:paymeback/components/icon_with_text.dart';
 import 'package:paymeback/model/charge.dart';
 import 'package:paymeback/screens/detail_charge.dart';
+import 'package:paymeback/utils/share_charge.dart';
 
 class ChargeCard extends StatelessWidget {
   final Charge charge;
@@ -20,11 +21,17 @@ class ChargeCard extends StatelessWidget {
             side: const BorderSide(color: Color(0xbbbdbdbd), width: 1)),
         child: InkWell(
           splashColor: Colors.green.withAlpha(30),
+          customBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25),
+              side: const BorderSide(color: Color(0xbbbdbdbd), width: 1)),
           onTap: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetailChargeScreen(charge: charge)));
+          },
+          onLongPress: () {
+            shareCharge(context, charge);
           },
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
@@ -32,6 +39,7 @@ class ChargeCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 12.0),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       charge.title,
@@ -43,15 +51,29 @@ class ChargeCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const Spacer(),
-                    Text(
-                      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
-                          .format(charge.value)
-                          .toString(),
-                      style: GoogleFonts.inter(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
+                    SizedBox(
+                      height: 26,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        // mainAxisAlignment: ,
+                        children: [
+                          Text("R\$",
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              )),
+                          Text(
+                            NumberFormat.currency(locale: 'pt_BR', symbol: '')
+                                .format(charge.value)
+                                .toString(),
+                            style: GoogleFonts.inter(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -61,7 +83,7 @@ class ChargeCard extends StatelessWidget {
                     children: [
                       IconWithText(
                           icon: const Icon(
-                            Icons.event,
+                            Icons.calendar_today,
                             size: 14,
                             color: Color(0xFFB1B0B8),
                           ),

@@ -18,17 +18,17 @@ class ListChargesScreen extends StatefulWidget {
 class _ListChargesState extends State<ListChargesScreen> {
   final List<Charge> chargeList = [
     Charge('Entrada do cinema', DateTime.now(), DateTime.now(), 50.0,
-        "Adson Melo", 999999999),
+        "Adson Melo", 84987535387),
     Charge('Festa de Natal', DateTime.now(), DateTime.now(), 220.9,
-        "Julio Ferreira", 888888888),
+        "Julio Ferreira", 81999353874),
     Charge('Viagem da faculdade', DateTime.now(), DateTime.now(), 39.0,
-        "Sergio de Souza", 999999999),
+        "Sergio de Souza", 83987586386),
     Charge('Entrada do cinema', DateTime.now(), DateTime.now(), 50.0,
-        "Adson Melo", 999999999),
+        "Adson Melo", 82987535387),
     Charge('Festa de Natal', DateTime.now(), DateTime.now(), 220.9,
-        "Julio Ferreira", 888888888),
+        "Julio Ferreira", 81987535497),
     Charge('Viagem da faculdade', DateTime.now(), DateTime.now(), 39.0,
-        "Sergio de Souza", 999999999),
+        "Sergio de Souza", 84987535097),
   ];
 
   @override

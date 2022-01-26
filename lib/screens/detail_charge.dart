@@ -1,6 +1,8 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:paymeback/model/charge.dart';
+import 'package:paymeback/utils/share_charge.dart';
 
 class DetailChargeScreen extends StatelessWidget {
   final Charge charge;
@@ -72,7 +74,7 @@ class DetailChargeScreen extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         ),
                         Text(
-                          DateFormat('dd/MM/aaaa').format(charge.startDate),
+                          DateFormat('dd/MM/yyyy').format(charge.startDate),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 20),
@@ -86,18 +88,15 @@ class DetailChargeScreen extends StatelessWidget {
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          DateFormat('dd/MM/aaaa').format(charge.endDate),
-                          textAlign: TextAlign.left,
-                        ),
+                        const Text("Data a receber"),
                         const Padding(
                           padding:
                               EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         ),
-                        const Text(
-                          '10/12/2022',
+                        Text(
+                          DateFormat('dd/MM/yyyy').format(charge.endDate),
                           textAlign: TextAlign.left,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 20),
                         ),
                       ],
@@ -147,7 +146,8 @@ class DetailChargeScreen extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         ),
                         Text(
-                          charge.phoneNumber.toString(),
+                          UtilBrasilFields.obterTelefone(
+                              charge.phoneNumber.toString()),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 20),
@@ -188,7 +188,9 @@ class DetailChargeScreen extends StatelessWidget {
           ),
           FloatingActionButton(
             heroTag: "Compartilhar",
-            onPressed: () {},
+            onPressed: () {
+              shareCharge(context, charge);
+            },
             backgroundColor: Colors.green,
             child: const Icon(Icons.share),
           )

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 import 'package:paymeback/components/input.dart';
 
 class InputRange extends StatelessWidget {
   final String label;
   final String? hintText;
-  final IconData? icon;
+  final Icon? icon;
   final String? initalValue1;
   final String? initalValue2;
   final String? Function(String?)? validator1;
@@ -16,6 +16,7 @@ class InputRange extends StatelessWidget {
   final void Function(String value) onChanged1;
   final void Function(String value) onChanged2;
   final int? maxLines;
+  final List<TextInputFormatter>? inputFormatters;
 
   const InputRange(
       {Key? key,
@@ -31,25 +32,21 @@ class InputRange extends StatelessWidget {
       this.controller1,
       this.controller2,
       this.hintText,
-      this.maxLines})
+      this.maxLines,
+      this.inputFormatters})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(
-            height: 8,
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child:
+                Text(label, style: const TextStyle(color: Color(0xFF666666))),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -59,14 +56,14 @@ class InputRange extends StatelessWidget {
                 child: Input(
                   hintText: hintText,
                   showLabel: false,
-                  onChanged: (value) {},
+                  onChanged: onChanged1,
                   icon: icon,
                   controller: controller1,
                   validator: validator1,
                   keyboardType: keyboardType,
                   initalValue: initalValue1,
                   maxLines: maxLines,
-                  padding: const EdgeInsets.all(0),
+                  inputFormatters: inputFormatters,
                 ),
               ),
               const SizedBox(width: 4),
@@ -76,14 +73,14 @@ class InputRange extends StatelessWidget {
                 child: Input(
                   hintText: hintText,
                   showLabel: false,
-                  onChanged: (value) {},
+                  onChanged: onChanged2,
                   icon: icon,
                   controller: controller2,
                   validator: validator2,
                   keyboardType: keyboardType,
                   initalValue: initalValue2,
                   maxLines: maxLines,
-                  padding: const EdgeInsets.all(0),
+                  inputFormatters: inputFormatters,
                 ),
               ),
             ],

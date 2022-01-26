@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paymeback/auth/user.dart';
 import 'package:paymeback/screens/list_charges.dart';
-import 'package:paymeback/screens/profile.dart';
+import 'package:paymeback/screens/insight.dart';
 
 class HomeScreen extends StatefulWidget {
   final User user;
@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ListChargesScreen(
         user: widget.user,
       ),
-      const ProfileScreen()
+      const InsightScreen()
     ];
     return screens[currentScreenIndex];
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/services.dart';
 
 class Input extends StatelessWidget {
   final void Function(String value) onChanged;
@@ -7,13 +7,14 @@ class Input extends StatelessWidget {
   final bool? externalLabel;
   final bool? showLabel;
   final String? hintText;
-  final IconData? icon;
+  final Icon? icon;
   final String? initalValue;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final int? maxLines;
   final EdgeInsetsGeometry? padding;
+  final List<TextInputFormatter>? inputFormatters;
 
   const Input(
       {Key? key,
@@ -28,18 +29,17 @@ class Input extends StatelessWidget {
       this.maxLines,
       this.externalLabel = true,
       this.showLabel = true,
-      this.padding = const EdgeInsets.all(8.0)})
+      this.padding = const EdgeInsets.all(0),
+      this.inputFormatters})
       : super(key: key);
 
   Widget getLabel() {
     var label = this.label ?? '';
     return externalLabel == true && showLabel == true && label.isNotEmpty
-        ? Text(
-            label,
-            style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
+        ? Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child:
+                Text(label, style: const TextStyle(color: Color(0xFF666666))),
           )
         : const SizedBox.shrink();
   }
@@ -61,43 +61,39 @@ class Input extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             getLabel(),
-            const SizedBox(
-              height: 8,
-            ),
-            Expanded(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: TextFormField(
+                autofocus: true,
+                onChanged: onChanged,
                 controller: controller,
                 initialValue: initalValue,
                 validator: validator,
-                onChanged: onChanged,
                 keyboardType: keyboardType,
                 maxLines: maxLines,
-                style: GoogleFonts.inter(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFFB1B0B8),
-                ),
+                inputFormatters: inputFormatters,
                 decoration: InputDecoration(
-                    hintText: getHintText(),
-                    suffixIcon: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
-                          child: Icon(icon, color: const Color(0xFF5DB075)),
-                        ),
-                        Container(
-                          width: 1,
-                          height: 48,
-                          color: const Color(0xFFE3E3E6),
-                        )
-                      ],
+                  suffixIcon: icon,
+                  hintText: getHintText(),
+                  hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
+                  contentPadding: const EdgeInsets.all(16),
+                  filled: true,
+                  fillColor: const Color(0xFFF6F6F6),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    borderSide: const BorderSide(
+                      color: Color(0xFFE8E8E8),
+                      width: 1.0,
                     ),
-                    enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Color(0xE8E8E8E8))),
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    )),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(100),
+                    borderSide: const BorderSide(
+                      color: Color(0xFF5DB075),
+                      width: 2.0,
+                    ),
+                  ),
+                ),
               ),
             ),
           ],

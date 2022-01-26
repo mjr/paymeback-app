@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:intl/intl.dart';
 import 'package:paymeback/auth/provider.dart';
@@ -46,9 +48,22 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 16, left: 4, right: 4),
+          padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
           child: Column(
             children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 56, vertical: 4),
+                child: Text(
+                  "Preencha os dados da cobrança",
+                  style: GoogleFonts.lexendDeca(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF585666),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
               Form(
                 key: _formKey,
                 child: Column(
@@ -289,7 +304,12 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                     child: TextFormField(
                                       keyboardType: TextInputType.number,
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
+                                        MoneyInputFormatter(
+                                          leadingSymbol: "R\$",
+                                          useSymbolPadding: true,
+                                          thousandSeparator:
+                                              ThousandSeparator.Period,
+                                        )
                                       ],
                                       onChanged: (value) {
                                         setState(() {
@@ -338,9 +358,10 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: TextFormField(
-                                      keyboardType: TextInputType.number,
+                                      keyboardType: TextInputType.phone,
                                       inputFormatters: [
-                                        FilteringTextInputFormatter.digitsOnly
+                                        FilteringTextInputFormatter.digitsOnly,
+                                        MaskedInputFormatter('(##)#####-####'),
                                       ],
                                       onChanged: (value) {
                                         setState(() {

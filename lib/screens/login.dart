@@ -96,7 +96,7 @@ class LoginFormState extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextFormField(
-              obscureText: true,
+              obscureText: _isObscure,
               onChanged: (value) {
                 setState(() {
                   _password = value;

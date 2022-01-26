@@ -42,11 +42,22 @@ class LoginFormState extends State<LoginForm> {
           Padding(
             padding: const EdgeInsets.only(top: 40, bottom: 20),
             child: Center(
-              child: Text('Entrar',
-                  style: GoogleFonts.inter(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black)),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Image.asset(
+                      'assets/images/logofull.png',
+                      height: 120,
+                    ),
+                  ),
+                  Text('Entrar',
+                      style: GoogleFonts.inter(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black)),
+                ],
+              ),
             ),
           ),
           Padding(
@@ -59,7 +70,7 @@ class LoginFormState extends State<LoginForm> {
                 });
               },
               decoration: InputDecoration(
-                hintText: 'E-mail',
+                hintText: 'Username',
                 hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
                 contentPadding: const EdgeInsets.all(16),
                 filled: true,
@@ -173,9 +184,9 @@ class LoginFormState extends State<LoginForm> {
                 )
               : const SizedBox.shrink(),
           Padding(
-            padding: const EdgeInsets.only(top: 50.0),
+            padding: const EdgeInsets.only(top: 40.0),
             child: Center(
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, 'register');
                 },

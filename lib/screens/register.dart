@@ -43,31 +43,24 @@ class RegisterFormState extends State<RegisterForm> {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 40, bottom: 20),
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Center(
+              child: Column(
                 children: [
-                  IconButton(
-                    icon: const Icon(Icons.close,
-                        color: Color.fromRGBO(189, 189, 189, 1.0)),
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, 'login');
-                    },
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Image.asset(
+                      'assets/images/logofull.png',
+                      height: 120,
+                    ),
                   ),
                   Text('Cadastre-se',
                       style: GoogleFonts.inter(
                           fontSize: 30,
                           fontWeight: FontWeight.w600,
                           color: Colors.black)),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, 'login');
-                    },
-                    child: const Text(
-                      'Entrar',
-                      style: TextStyle(color: Color(0xFF5DB075), fontSize: 15),
-                    ),
-                  ),
-                ]),
+                ],
+              ),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -112,7 +105,7 @@ class RegisterFormState extends State<RegisterForm> {
                 });
               },
               decoration: InputDecoration(
-                hintText: 'E-mail',
+                hintText: 'Username',
                 hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
                 contentPadding: const EdgeInsets.all(16),
                 filled: true,
@@ -226,6 +219,20 @@ class RegisterFormState extends State<RegisterForm> {
                       style: TextStyle(color: Colors.red)),
                 )
               : const SizedBox.shrink(),
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, 'login');
+                },
+                child: const Text(
+                  'Já possui uma conta? Entrar',
+                  style: TextStyle(color: Color(0xFF5DB075), fontSize: 15),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

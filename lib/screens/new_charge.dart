@@ -48,6 +48,7 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                   children: [
                     Input(
                         label: "Título",
+                        hintText: "Digite o título do empréstimo",
                         onChanged: (value) {},
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -56,7 +57,8 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                           return null;
                         }),
                     Input(
-                        label: "Nome do devedor",
+                        label: "Nome",
+                        hintText: 'Digite o nome do devedor',
                         icon: Icons.account_circle,
                         onChanged: (value) {},
                         validator: (String? value) {
@@ -70,6 +72,7 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                         Expanded(
                           child: Input(
                               label: "Data do empréstimo",
+                              hintText: 'dd/mm/aa',
                               icon: Icons.today,
                               keyboardType: TextInputType.datetime,
                               onChanged: (value) {},
@@ -80,12 +83,10 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                 return null;
                               }),
                         ),
-                        const SizedBox(
-                          width: 16,
-                        ),
                         Expanded(
                             child: Input(
                                 label: "Data a receber",
+                                hintText: 'dd/mm/aa',
                                 icon: Icons.event,
                                 keyboardType: TextInputType.datetime,
                                 onChanged: (value) {},
@@ -112,12 +113,10 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                 return null;
                               }),
                         ),
-                        const SizedBox(
-                          width: 16,
-                        ),
                         Expanded(
                           child: Input(
                               label: "Telefone",
+                              hintText: '(xx) xxxxx-xxxx',
                               keyboardType: TextInputType.phone,
                               onChanged: (value) {},
                               validator: (String? value) {
@@ -131,20 +130,28 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                     ),
                     Input(
                       label: "Detalhes",
+                      hintText: 'Digite os detalhes do empréstimo',
                       maxLines: 8,
                       onChanged: (value) {},
                     ),
-                    ElevatedButton(
-                      style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 32, vertical: 16),
-                          textStyle: const TextStyle(fontSize: 16)),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          // Process data.
-                        }
-                      },
-                      child: const Text('Salvar'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, bottom: 16),
+                      child: MaterialButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            // Process data.
+                          }
+                        },
+                        textColor: Colors.white,
+                        color: const Color(0xFF5DB075),
+                        height: 51,
+                        minWidth: 200,
+                        child:
+                            const Text('Salvar', textAlign: TextAlign.center),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(100))),
+                      ),
                     ),
                   ],
                 ),

@@ -1,113 +1,83 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:intl/intl.dart';
+import 'package:paymeback/components/icon_with_text.dart';
+import 'package:paymeback/model/charge.dart';
+import 'package:paymeback/screens/detail_charge.dart';
 
 class ChargeCard extends StatelessWidget {
-  final String title;
-  final String endDate;
-  final double value;
-  final String debtorName;
+  final Charge charge;
 
-  const ChargeCard(
-      {Key? key,
-      required this.title,
-      required this.endDate,
-      required this.value,
-      required this.debtorName})
-      : super(key: key);
+  const ChargeCard({Key? key, required this.charge}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Card(
-        borderOnForeground: true,
-        child: InkWell(
-          splashColor: Colors.green.withAlpha(30),
-          onTap: () {
-            if (kDebugMode) {
-              print('Card tapped');
-            }
-          },
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+          side: const BorderSide(color: Color(0xFF5DB075), width: 2)),
+      child: InkWell(
+        splashColor: Colors.green.withAlpha(30),
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DetailCharge(charge: charge)));
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ListTile(
-                  title: SizedBox(
-                width: 20,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12.0),
                 child: Row(
                   children: [
                     Text(
-                      title,
+                      charge.title,
                       style: GoogleFonts.inter(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                       strutStyle: const StrutStyle(fontSize: 12.0),
                       overflow: TextOverflow.ellipsis,
                     ),
                     const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 14),
-                      child: Text(
-                        "R\$ $value",
-                        style: GoogleFonts.inter(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                        ),
+                    Text(
+                      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
+                          .format(charge.value)
+                          .toString(),
+                      style: GoogleFonts.inter(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
-              )),
+              ),
               ListBody(
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 14),
-                    child: Row(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.event,
-                              size: 20,
-                              color: Color(0xFFB1B0B8),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              endDate,
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xFFB1B0B8),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(width: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.account_circle,
-                              size: 20,
-                              color: Color(0xFFB1B0B8),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              debtorName,
-                              style: GoogleFonts.inter(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: const Color(0xFFB1B0B8),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                  Row(
+                    children: [
+                      IconWithText(
+                          icon: const Icon(
+                            Icons.event,
+                            size: 14,
+                            color: Color(0xFFB1B0B8),
+                          ),
+                          text: DateFormat('dd/MM/aaaa')
+                              .format(charge.endDate)
+                              .toString()),
+                      const SizedBox(width: 12),
+                      IconWithText(
+                          icon: const Icon(
+                            Icons.account_circle,
+                            size: 14,
+                            color: Color(0xFFB1B0B8),
+                          ),
+                          text: charge.debtor),
+                    ],
                   ),
                 ],
               ),

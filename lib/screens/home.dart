@@ -13,21 +13,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final screens = [const ListChargesScreen(), const ProfileScreen()];
+  Widget getCurrentScreen() {
+    List<Widget> screens = [
+      ListChargesScreen(
+        user: widget.user,
+      ),
+      const ProfileScreen()
+    ];
+    return screens[currentScreenIndex];
+  }
 
-  var currentScreen = 0;
+  var currentScreenIndex = 0;
 
   void setScreen(int index) {
-    currentScreen = index;
+    currentScreenIndex = index;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Olá, ${widget.user.fullName}'),
-      ),
-      body: screens[currentScreen],
+      body: getCurrentScreen(),
       bottomNavigationBar: SizedBox(
         height: 90,
         child: Row(
@@ -40,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 icon: Icon(
                   Icons.home,
-                  color: currentScreen == 0
+                  color: currentScreenIndex == 0
                       ? const Color(0xFF5DB075)
                       : const Color(0xFF706E7A),
                 )),
@@ -51,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 icon: Icon(
                   Icons.insert_chart_outlined_outlined,
-                  color: currentScreen == 1
+                  color: currentScreenIndex == 1
                       ? const Color(0xFF5DB075)
                       : const Color(0xFF706E7A),
                 ))

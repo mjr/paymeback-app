@@ -313,7 +313,7 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                       ],
                                       onChanged: (value) {
                                         setState(() {
-                                          _value = value;
+                                          _value = value.replaceAll('R\$ ', '').replaceAll(',', '.');
                                         });
                                       },
                                       decoration: InputDecoration(
@@ -360,7 +360,7 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                     child: TextFormField(
                                       keyboardType: TextInputType.phone,
                                       inputFormatters: [
-                                        MaskedInputFormatter('(##)#####-####'),
+                                        MaskedInputFormatter('(##) #####-####'),
                                       ],
                                       onChanged: (value) {
                                         setState(() {

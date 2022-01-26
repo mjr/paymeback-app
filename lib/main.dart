@@ -7,5 +7,5 @@ import 'routes.dart';
 Future<void> main() async {
   await dotenv.load();
 
-  runApp(Routes());
+  runApp(const Routes());
 }

@@ -1,29 +1,24 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:paymeback/auth/provider.dart';
 import 'package:paymeback/auth/user.dart';
 
-
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({ Key? key }) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
-        child: LoginForm()
-      ),
+          padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
+          child: LoginForm()),
     );
   }
 }
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({ Key? key }) : super(key: key);
+  const LoginForm({Key? key}) : super(key: key);
 
   @override
   LoginFormState createState() => LoginFormState();
@@ -45,32 +40,44 @@ class LoginFormState extends State<LoginForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 40, bottom: 20),
+            padding: const EdgeInsets.only(top: 40, bottom: 20),
             child: Center(
-              child: Text(
-                'Entrar',
-                style: GoogleFonts.inter(
-                  fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black
-                )
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Image.asset(
+                      'assets/images/logofull.png',
+                      height: 120,
+                    ),
+                  ),
+                  Text('Entrar',
+                      style: GoogleFonts.inter(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black)),
+                ],
               ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               autofocus: true,
               onChanged: (value) {
-                if (value != null) setState(() { _username = value; });
+                setState(() {
+                  _username = value;
+                });
               },
               decoration: InputDecoration(
-                hintText: 'E-mail',
-                hintStyle: TextStyle(color: Color(0xFFBDBDBD)),
-                contentPadding: EdgeInsets.all(16),
+                hintText: 'Username',
+                hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
+                contentPadding: const EdgeInsets.all(16),
                 filled: true,
-                fillColor: Color(0xFFF6F6F6),
+                fillColor: const Color(0xFFF6F6F6),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Color(0xFFE8E8E8),
                     width: 1.0,
                   ),
@@ -85,23 +92,25 @@ class LoginFormState extends State<LoginForm> {
               ),
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               obscureText: true,
               onChanged: (value) {
-                if (value != null) setState(() { _password = value; });
+                setState(() {
+                  _password = value;
+                });
               },
               decoration: InputDecoration(
                 hintText: 'Senha',
-                hintStyle: TextStyle(color: Color(0xFFBDBDBD)),
-                contentPadding: EdgeInsets.all(16),
+                hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
+                contentPadding: const EdgeInsets.all(16),
                 filled: true,
-                fillColor: Color(0xFFF6F6F6),
+                fillColor: const Color(0xFFF6F6F6),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Color(0xFFE8E8E8),
                     width: 1.0,
                   ),
@@ -114,19 +123,25 @@ class LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 suffixIcon: IconButton(
-                  icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                  icon: Icon(
+                      _isObscure ? Icons.visibility : Icons.visibility_off),
                   onPressed: () {
-                    setState(() { _isObscure = !_isObscure; });
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
                   },
                 ),
               ),
             ),
           ),
-          SizedBox(height: 60),
+          const SizedBox(height: 60),
           MaterialButton(
             onPressed: () async {
               FocusScope.of(context).requestFocus(FocusNode());
-              setState(() { _isError = false; _isLoading = true; });
+              setState(() {
+                _isError = false;
+                _isLoading = true;
+              });
 
               try {
                 final response = await auth.login(_username, _password);
@@ -136,35 +151,46 @@ class LoginFormState extends State<LoginForm> {
                   token: response['token'],
                 );
                 auth.setUser(context, user);
-                setState(() { _isError = false; });
+                setState(() {
+                  _isError = false;
+                });
               } catch (err) {
-                setState(() { _isError = true; });
+                setState(() {
+                  _isError = true;
+                });
               } finally {
-                setState(() { _isLoading = false; });
+                setState(() {
+                  _isLoading = false;
+                });
               }
             },
             textColor: Colors.white,
-            color: Color(0xFF5DB075),
+            color: const Color(0xFF5DB075),
             child: SizedBox(
               width: double.infinity,
-              child: Text(_isLoading ? 'Entrando...' : 'Entrar', textAlign: TextAlign.center),
+              child: Text(_isLoading ? 'Entrando...' : 'Entrar',
+                  textAlign: TextAlign.center),
             ),
             height: 51,
             minWidth: 600,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(100))),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(100))),
           ),
-          _isError ? Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: Text('Usuário ou senha inválidos', style: TextStyle(color: Colors.red)),
-          ) : SizedBox.shrink(),
+          _isError
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Text('Usuário ou senha inválidos',
+                      style: TextStyle(color: Colors.red)),
+                )
+              : const SizedBox.shrink(),
           Padding(
-            padding: EdgeInsets.only(top: 50.0),
+            padding: const EdgeInsets.only(top: 40.0),
             child: Center(
-              child: FlatButton(
+              child: TextButton(
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, 'register');
                 },
-                child: Text(
+                child: const Text(
                   'Não tem uma conta? Cadastre-se',
                   style: TextStyle(color: Color(0xFF5DB075), fontSize: 15),
                 ),

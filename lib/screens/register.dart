@@ -6,22 +6,21 @@ import 'package:paymeback/auth/provider.dart';
 import 'package:paymeback/auth/user.dart';
 
 class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({ Key? key }) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
-        child: RegisterForm()
-      ),
+          padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
+          child: RegisterForm()),
     );
   }
 }
 
 class RegisterForm extends StatefulWidget {
-  const RegisterForm({ Key? key }) : super(key: key);
+  const RegisterForm({Key? key}) : super(key: key);
 
   @override
   RegisterFormState createState() => RegisterFormState();
@@ -43,50 +42,44 @@ class RegisterFormState extends State<RegisterForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(top: 40, bottom: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.close, color: Color.fromRGBO(189, 189, 189, 1.0)),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, 'login');
-                  },
-                ),
-                Text(
-                  'Cadastre-se',
-                  style: GoogleFonts.inter(
-                    fontSize: 30, fontWeight: FontWeight.w600, color: Colors.black
-                  )
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, 'login');
-                  },
-                  child: Text(
-                    'Entrar',
-                    style: TextStyle(color: Color(0xFF5DB075), fontSize: 15),
+            padding: const EdgeInsets.only(top: 40, bottom: 20),
+            child: Center(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Image.asset(
+                      'assets/images/logofull.png',
+                      height: 120,
+                    ),
                   ),
-                ),
-              ]
+                  Text('Cadastre-se',
+                      style: GoogleFonts.inter(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black)),
+                ],
+              ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               autofocus: true,
               onChanged: (value) {
-                if (value != null) setState(() { _fullName = value; });
+                setState(() {
+                  _fullName = value;
+                });
               },
               decoration: InputDecoration(
                 hintText: 'Nome',
-                hintStyle: TextStyle(color: Color(0xFFBDBDBD)),
-                contentPadding: EdgeInsets.all(16),
+                hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
+                contentPadding: const EdgeInsets.all(16),
                 filled: true,
-                fillColor: Color(0xFFF6F6F6),
+                fillColor: const Color(0xFFF6F6F6),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Color(0xFFE8E8E8),
                     width: 1.0,
                   ),
@@ -101,23 +94,25 @@ class RegisterFormState extends State<RegisterForm> {
               ),
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               autofocus: true,
               onChanged: (value) {
-                if (value != null) setState(() { _username = value; });
+                setState(() {
+                  _username = value;
+                });
               },
               decoration: InputDecoration(
-                hintText: 'E-mail',
-                hintStyle: TextStyle(color: Color(0xFFBDBDBD)),
-                contentPadding: EdgeInsets.all(16),
+                hintText: 'Username',
+                hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
+                contentPadding: const EdgeInsets.all(16),
                 filled: true,
-                fillColor: Color(0xFFF6F6F6),
+                fillColor: const Color(0xFFF6F6F6),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Color(0xFFE8E8E8),
                     width: 1.0,
                   ),
@@ -132,23 +127,25 @@ class RegisterFormState extends State<RegisterForm> {
               ),
             ),
           ),
-          SizedBox(height: 2),
+          const SizedBox(height: 2),
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextFormField(
               obscureText: _isObscure,
               onChanged: (value) {
-                if (value != null) setState(() { _password = value; });
+                setState(() {
+                  _password = value;
+                });
               },
               decoration: InputDecoration(
                 hintText: 'Senha',
-                hintStyle: TextStyle(color: Color(0xFFBDBDBD)),
-                contentPadding: EdgeInsets.all(16),
+                hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
+                contentPadding: const EdgeInsets.all(16),
                 filled: true,
-                fillColor: Color(0xFFF6F6F6),
+                fillColor: const Color(0xFFF6F6F6),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Color(0xFFE8E8E8),
                     width: 1.0,
                   ),
@@ -161,49 +158,81 @@ class RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
                 suffixIcon: IconButton(
-                  icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                  icon: Icon(
+                      _isObscure ? Icons.visibility : Icons.visibility_off),
                   onPressed: () {
-                    setState(() { _isObscure = !_isObscure; });
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
                   },
                 ),
               ),
             ),
           ),
-          SizedBox(height: 60),
+          const SizedBox(height: 60),
           MaterialButton(
             onPressed: () async {
               FocusScope.of(context).requestFocus(FocusNode());
-              setState(() { _isError = false; _isLoading = true; });
+              setState(() {
+                _isError = false;
+                _isLoading = true;
+              });
 
               try {
-                final response = await auth.register(_fullName, _username, _password);
+                final response =
+                    await auth.register(_fullName, _username, _password);
                 final user = User(
                   fullName: response['fullName'],
                   nickname: response['nickname'],
                   token: response['token'],
                 );
                 auth.setUser(context, user);
-                setState(() { _isError = false; });
+                setState(() {
+                  _isError = false;
+                });
               } catch (err) {
-                setState(() { _isError = true; });
+                setState(() {
+                  _isError = true;
+                });
               } finally {
-                setState(() { _isLoading = false; });
+                setState(() {
+                  _isLoading = false;
+                });
               }
             },
             textColor: Colors.white,
-            color: Color(0xFF5DB075),
+            color: const Color(0xFF5DB075),
             child: SizedBox(
               width: double.infinity,
-              child: Text(_isLoading ? 'Cadastrando...' : 'Cadastrar', textAlign: TextAlign.center),
+              child: Text(_isLoading ? 'Cadastrando...' : 'Cadastrar',
+                  textAlign: TextAlign.center),
             ),
             height: 51,
             minWidth: 600,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(100))),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(100))),
           ),
-          _isError ? Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child: Text('Ocorreu um erro', style: TextStyle(color: Colors.red)),
-          ) : SizedBox.shrink(),
+          _isError
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 10.0),
+                  child: Text('Ocorreu um erro',
+                      style: TextStyle(color: Colors.red)),
+                )
+              : const SizedBox.shrink(),
+          Padding(
+            padding: const EdgeInsets.only(top: 40.0),
+            child: Center(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, 'login');
+                },
+                child: const Text(
+                  'Já possui uma conta? Entrar',
+                  style: TextStyle(color: Color(0xFF5DB075), fontSize: 15),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

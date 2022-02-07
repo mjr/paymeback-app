@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -313,7 +312,9 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                       ],
                                       onChanged: (value) {
                                         setState(() {
-                                          _value = value.replaceAll('R\$ ', '').replaceAll(',', '.');
+                                          _value = value
+                                              .replaceAll('R\$ ', '')
+                                              .replaceAll(',', '.');
                                         });
                                       },
                                       decoration: InputDecoration(

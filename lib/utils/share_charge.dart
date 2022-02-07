@@ -13,9 +13,9 @@ void shareCharge(BuildContext context, Charge charge) {
   final String messageAfterEndDate =
       "Olá ${charge.debtor}, o prazo para o pagamento venceu dia ${DateFormat('dd/MM').format(charge.endDate)}. Estou no aguardo do pagamento!";
 
-  String message = charge.endDate.isAfter(DateTime.now())
+  String message = DateTime.now().isAfter(charge.endDate)
       ? messageAfterEndDate
-      : charge.endDate.isBefore(DateTime.now())
+      : DateTime.now().isBefore(charge.endDate)
           ? messageBeforeEndDate
           : messageSameEndDate;
 

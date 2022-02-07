@@ -87,7 +87,7 @@ class ChargeCard extends StatelessWidget {
                             size: 14,
                             color: Color(0xFFB1B0B8),
                           ),
-                          text: DateFormat('dd/MM/aaaa')
+                          text: DateFormat('dd/MM/yyyy')
                               .format(charge.endDate)
                               .toString()),
                       const SizedBox(width: 12),

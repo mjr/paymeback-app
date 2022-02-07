@@ -1,7 +1,7 @@
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:paymeback/model/charge.dart';
+import 'package:paymeback/utils/masks.dart';
 import 'package:paymeback/utils/share_charge.dart';
 
 class DetailChargeScreen extends StatelessWidget {
@@ -146,8 +146,7 @@ class DetailChargeScreen extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         ),
                         Text(
-                          UtilBrasilFields.obterTelefone(
-                              charge.phoneNumber.toString()),
+                          formatPhoneNumber(charge.phoneNumber),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 20),

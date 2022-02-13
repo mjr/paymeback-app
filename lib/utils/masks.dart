@@ -24,7 +24,7 @@ String sanitizePhoneNumber(String phoneNumber) {
   }
 }
 
-double? covertMoneyToDouble(String value) {
+double covertMoneyToDouble(String value) {
   try {
     return UtilBrasilFields.converterMoedaParaDouble(value);
   } catch (err) {
@@ -32,5 +32,17 @@ double? covertMoneyToDouble(String value) {
       print(err);
     }
     return 0;
+  }
+}
+
+String convertDoubleToMoney(double value) {
+  try {
+    String num = value.toStringAsFixed(2).replaceAll('.', ',');
+    return 'R\$ $num';
+  } catch (err) {
+    if (kDebugMode) {
+      print(err);
+    }
+    return 'R\$ 0,00';
   }
 }

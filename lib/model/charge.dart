@@ -1,16 +1,18 @@
+import 'package:paymeback/utils/masks.dart';
+
 class Charge {
-  final String id;
-  final String title;
-  final DateTime startDate;
-  final DateTime endDate;
-  final double value;
-  final String debtor;
-  final String phoneNumber;
-  final String? description;
-  final bool paid;
+  late String? id;
+  late String title;
+  late DateTime startDate;
+  late DateTime endDate;
+  late double value;
+  late String debtor;
+  late String phoneNumber;
+  late String? description;
+  late bool paid;
 
   Charge(
-      {required this.id,
+      {this.id,
       required this.title,
       required this.startDate,
       required this.endDate,
@@ -19,6 +21,33 @@ class Charge {
       required this.phoneNumber,
       required this.paid,
       this.description});
+
+  Map<String, dynamic> toMap() {
+    return {
+      'pk': id,
+      'title': title,
+      'debtorName': debtor,
+      'loanDate': startDate.toString(),
+      'dateToReceive': endDate.toString(),
+      'value': value,
+      'debtorPhone': phoneNumber,
+      'details': description,
+    };
+  }
+
+  factory Charge.fromForm(Map<String, dynamic> form) {
+    return Charge(
+      id: form['id'],
+      title: form['title'],
+      debtor: form['debtor'],
+      startDate: DateTime.parse(form['startDate']),
+      endDate: DateTime.parse(form['endDate']),
+      value: covertMoneyToDouble(form['value']),
+      phoneNumber: form['phoneNumber'],
+      description: form['description'],
+      paid: form['paid'] == "true",
+    );
+  }
 
   factory Charge.fromJson(Map<String, dynamic> json) {
     return Charge(

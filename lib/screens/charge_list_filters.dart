@@ -7,9 +7,9 @@ import 'package:paymeback/model/charge_filters.dart';
 import 'package:paymeback/utils/masks.dart';
 
 class ChargeListFilterScreen extends StatefulWidget {
-  late ChargeFilters previousFilters;
-  final updateFilters;
-  final loadCharges;
+  ChargeFilters previousFilters;
+  Function updateFilters;
+  Function loadCharges;
 
   ChargeListFilterScreen(
       {Key? key,
@@ -26,7 +26,13 @@ class _ChargeListFilterState extends State<ChargeListFilterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isError = false;
-  late final ChargeFilters _innerFilters = widget.previousFilters;
+  late ChargeFilters _innerFilters;
+
+  @override
+  void initState() {
+    _innerFilters = widget.previousFilters;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

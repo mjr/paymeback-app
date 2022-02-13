@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:paymeback/auth/provider.dart';
 import 'package:paymeback/model/charge.dart';
+import 'package:paymeback/screens/charge_form.dart';
+import 'package:paymeback/utils/client.dart';
 import 'package:paymeback/utils/masks.dart';
 import 'package:paymeback/utils/share_charge.dart';
 
-class DetailChargeScreen extends StatelessWidget {
+class DetailChargeScreen extends StatefulWidget {
   final Charge charge;
-
   const DetailChargeScreen({Key? key, required this.charge}) : super(key: key);
+
+  @override
+  _DetailChargeScreenState createState() => _DetailChargeScreenState();
+}
+
+class _DetailChargeScreenState extends State<DetailChargeScreen> {
+  final auth = AuthProvider();
+  final client = Client();
+  bool _isLoading = false;
+  bool _isError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +47,7 @@ class DetailChargeScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 ),
                 Text(
-                  charge.title,
+                  widget.charge.title,
                   textAlign: TextAlign.left,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, fontSize: 20),
@@ -51,7 +63,7 @@ class DetailChargeScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                 ),
                 Text(
-                  charge.debtor,
+                  widget.charge.debtor,
                   textAlign: TextAlign.left,
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, fontSize: 20),
@@ -74,7 +86,8 @@ class DetailChargeScreen extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         ),
                         Text(
-                          DateFormat('dd/MM/yyyy').format(charge.startDate),
+                          DateFormat('dd/MM/yyyy')
+                              .format(widget.charge.startDate),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 20),
@@ -94,7 +107,8 @@ class DetailChargeScreen extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         ),
                         Text(
-                          DateFormat('dd/MM/yyyy').format(charge.endDate),
+                          DateFormat('dd/MM/yyyy')
+                              .format(widget.charge.endDate),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 20),
@@ -122,7 +136,7 @@ class DetailChargeScreen extends StatelessWidget {
                         ),
                         Text(
                           NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
-                              .format(charge.value)
+                              .format(widget.charge.value)
                               .toString(),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
@@ -146,7 +160,7 @@ class DetailChargeScreen extends StatelessWidget {
                               EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                         ),
                         Text(
-                          formatPhoneNumber(charge.phoneNumber),
+                          formatPhoneNumber(widget.charge.phoneNumber),
                           textAlign: TextAlign.left,
                           style: const TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 20),
@@ -155,21 +169,31 @@ class DetailChargeScreen extends StatelessWidget {
                     )),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                ),
-                const Text(
-                  'Detalhes',
-                  textAlign: TextAlign.left,
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                ),
-                const Text(
-                  'Labore sunt veniam amet est. Minim nisi dolor eu ad incididunt cillum elit ex ut. Dolore exercitation nulla tempor consequat aliquip occaecat. Nisi id ipsum irure aute. Deserunt ',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-                ),
+                widget.charge.description == null ||
+                        widget.charge.description == ""
+                    ? const SizedBox()
+                    : Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 15),
+                          ),
+                          const Text(
+                            'Detalhes',
+                            textAlign: TextAlign.left,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 5),
+                          ),
+                          Text(
+                            widget.charge.description ?? '',
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w600, fontSize: 20),
+                          ),
+                        ],
+                      )
               ],
             ),
           ),
@@ -177,8 +201,27 @@ class DetailChargeScreen extends StatelessWidget {
         floatingActionButton:
             Column(mainAxisAlignment: MainAxisAlignment.end, children: [
           FloatingActionButton(
+            heroTag: "Editar",
+            onPressed: () {
+              if (_isLoading) return;
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ChargeFormScreen(charge: widget.charge)));
+            },
+            backgroundColor: Colors.green,
+            child: const Icon(Icons.edit),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          FloatingActionButton(
             heroTag: "Remover",
-            onPressed: () {},
+            onPressed: () async {
+              removeCharge();
+            },
             backgroundColor: Colors.green,
             child: const Icon(Icons.delete),
           ),
@@ -188,11 +231,43 @@ class DetailChargeScreen extends StatelessWidget {
           FloatingActionButton(
             heroTag: "Compartilhar",
             onPressed: () {
-              shareCharge(context, charge);
+              if (_isLoading) return;
+
+              shareCharge(context, widget.charge);
             },
             backgroundColor: Colors.green,
             child: const Icon(Icons.share),
           )
         ]));
+  }
+
+  void removeCharge() async {
+    if (_isLoading) return;
+
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      _isError = false;
+      _isLoading = true;
+    });
+
+    try {
+      await client.delete('charges', {
+        'id': widget.charge.id,
+      });
+      final user = await auth.getUser();
+      Navigator.pushReplacementNamed(context, 'home', arguments: user);
+      setState(() {
+        _isError = false;
+      });
+    } catch (err) {
+      print(err);
+      setState(() {
+        _isError = true;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

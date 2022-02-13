@@ -4,35 +4,58 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:intl/intl.dart';
 import 'package:paymeback/auth/provider.dart';
+import 'package:paymeback/model/charge.dart';
 import 'package:paymeback/utils/client.dart';
+import 'package:paymeback/utils/masks.dart';
 
-class NewChargeScreen extends StatefulWidget {
-  const NewChargeScreen({Key? key}) : super(key: key);
+class ChargeFormScreen extends StatefulWidget {
+  final Charge? charge;
+
+  const ChargeFormScreen({Key? key, this.charge}) : super(key: key);
 
   @override
-  _NewChargeScreenState createState() => _NewChargeScreenState();
+  _ChargeFormScreenState createState() => _ChargeFormScreenState();
 }
 
-class _NewChargeScreenState extends State<NewChargeScreen> {
+class _ChargeFormScreenState extends State<ChargeFormScreen> {
   final auth = AuthProvider();
   final client = Client();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String? _title,
-      _debtorName,
-      _loanDate,
-      _dateToReceive,
-      _value,
-      _debtorPhone,
-      _details;
+
+  late Map<String, dynamic> formCharge;
+
   final TextEditingController _loanDateInput = TextEditingController();
   final TextEditingController _dateToReceiveInput = TextEditingController();
   bool _isLoading = false;
   bool _isError = false;
 
+  Map<String, dynamic> chargeToForm(Charge? charge) {
+    return {
+      'id': charge?.id?.toString() ?? "",
+      'title': charge?.title ?? "",
+      'startDate': charge?.startDate,
+      'endDate': charge?.endDate,
+      'value': charge?.value != null ? convertDoubleToMoney(charge!.value) : "",
+      'debtor': charge?.debtor ?? "",
+      'phoneNumber': charge?.phoneNumber.toString() ?? "",
+      'paid': charge?.paid.toString() ?? "",
+      'description': charge?.description ?? "",
+    };
+  }
+
   @override
   void initState() {
-    _loanDateInput.text = '';
-    _dateToReceiveInput.text = '';
+    formCharge = chargeToForm(widget.charge);
+
+    _loanDateInput.text = formCharge['startDate'] != null
+        ? DateFormat('dd/MM/yyyy').format(formCharge['startDate'])
+        : '';
+    _dateToReceiveInput.text = formCharge['endDate'] != null
+        ? DateFormat('dd/MM/yyyy').format(formCharge['endDate'])
+        : '';
+
+    formCharge['startDate'] = formCharge['startDate'].toString();
+    formCharge['endDate'] = formCharge['endDate'].toString();
     super.initState();
   }
 
@@ -77,9 +100,10 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         autofocus: true,
+                        initialValue: formCharge['title'],
                         onChanged: (value) {
                           setState(() {
-                            _title = value;
+                            formCharge['title'] = value;
                           });
                         },
                         decoration: InputDecoration(
@@ -114,9 +138,10 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        initialValue: formCharge['debtor'],
                         onChanged: (value) {
                           setState(() {
-                            _debtorName = value;
+                            formCharge['debtor'] = value;
                           });
                         },
                         decoration: InputDecoration(
@@ -166,10 +191,13 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                       onTap: () async {
                                         DateTime? value = await showDatePicker(
                                             context: context,
-                                            initialDate: DateTime.now(),
+                                            initialDate:
+                                                _loanDateInput.text.isNotEmpty
+                                                    ? DateTime.parse(
+                                                        _loanDateInput.text)
+                                                    : DateTime.now(),
                                             firstDate: DateTime(2022),
                                             lastDate: DateTime(2050));
-
                                         if (value != null) {
                                           String date = DateFormat('yyyy-MM-dd')
                                               .format(value);
@@ -178,7 +206,7 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                                   .format(value);
 
                                           setState(() {
-                                            _loanDate = date;
+                                            formCharge['startDate'] = date;
                                             _loanDateInput.text = formatted;
                                           });
                                         }
@@ -233,7 +261,11 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                       onTap: () async {
                                         DateTime? value = await showDatePicker(
                                             context: context,
-                                            initialDate: DateTime.now(),
+                                            initialDate: _dateToReceiveInput
+                                                    .text.isNotEmpty
+                                                ? DateTime.parse(
+                                                    _dateToReceiveInput.text)
+                                                : DateTime.now(),
                                             firstDate: DateTime(2022),
                                             lastDate: DateTime(2050));
 
@@ -245,7 +277,7 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                                   .format(value);
 
                                           setState(() {
-                                            _dateToReceive = date;
+                                            formCharge['endDate'] = date;
                                             _dateToReceiveInput.text =
                                                 formatted;
                                           });
@@ -310,9 +342,10 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                               ThousandSeparator.Period,
                                         )
                                       ],
+                                      initialValue: formCharge['value'],
                                       onChanged: (value) {
                                         setState(() {
-                                          _value = value
+                                          formCharge['value'] = value
                                               .replaceAll('R\$ ', '')
                                               .replaceAll(',', '.');
                                         });
@@ -361,11 +394,12 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                     child: TextFormField(
                                       keyboardType: TextInputType.phone,
                                       inputFormatters: [
-                                        MaskedInputFormatter('(##) #####-####'),
+                                        MaskedInputFormatter('(##)#####-####'),
                                       ],
+                                      initialValue: formCharge['phoneNumber'],
                                       onChanged: (value) {
                                         setState(() {
-                                          _debtorPhone = value;
+                                          formCharge['phoneNumber'] = value;
                                         });
                                       },
                                       decoration: InputDecoration(
@@ -408,9 +442,10 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         maxLines: 5,
+                        initialValue: formCharge['description'],
                         onChanged: (value) {
                           setState(() {
-                            _details = value;
+                            formCharge['description'] = value;
                           });
                         },
                         decoration: InputDecoration(
@@ -454,37 +489,7 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
                                     vertical: 16, horizontal: 40)),
                           ),
                           onPressed: () async {
-                            FocusScope.of(context).requestFocus(FocusNode());
-                            setState(() {
-                              _isError = false;
-                              _isLoading = true;
-                            });
-
-                            try {
-                              final response = await client.post('charges', {
-                                'title': _title,
-                                'debtorName': _debtorName,
-                                'loanDate': _loanDate,
-                                'dateToReceive': _dateToReceive,
-                                'value': _value,
-                                'debtorPhone': _debtorPhone,
-                                'details': _details,
-                              });
-                              final user = await auth.getUser();
-                              Navigator.pushReplacementNamed(context, 'home',
-                                  arguments: user);
-                              setState(() {
-                                _isError = false;
-                              });
-                            } catch (err) {
-                              setState(() {
-                                _isError = true;
-                              });
-                            } finally {
-                              setState(() {
-                                _isLoading = false;
-                              });
-                            }
+                            saveCharge();
                           },
                           child: Text(_isLoading ? 'Salvando...' : 'Salvar',
                               style: const TextStyle(
@@ -508,5 +513,36 @@ class _NewChargeScreenState extends State<NewChargeScreen> {
         ),
       ),
     );
+  }
+
+  void saveCharge() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    setState(() {
+      _isError = false;
+      _isLoading = true;
+    });
+
+    try {
+      Function request =
+          formCharge['id'] != null && formCharge['id'].toString().isNotEmpty
+              ? client.patch
+              : client.post;
+      await request('charges', Charge.fromForm(formCharge).toMap());
+
+      final user = await auth.getUser();
+      Navigator.pushReplacementNamed(context, 'home', arguments: user);
+      setState(() {
+        _isError = false;
+      });
+    } catch (err) {
+      print(err);
+      setState(() {
+        _isError = true;
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 }

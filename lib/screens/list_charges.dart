@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:paymeback/auth/user.dart';
 import 'package:paymeback/components/charge_card.dart';
@@ -65,7 +66,7 @@ class _ListChargesState extends State<ListChargesScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, 'new-charge');
+          Navigator.pushNamed(context, 'charge-form');
         },
         backgroundColor: Colors.green,
         child: const Icon(Icons.add),
@@ -87,7 +88,9 @@ class _ListChargesState extends State<ListChargesScreen> {
         _isError = false;
       });
     } catch (err) {
-      print(err);
+      if (kDebugMode) {
+        print(err);
+      }
       setState(() {
         _isError = true;
       });

@@ -4,7 +4,7 @@ import 'package:paymeback/screens/splash.dart';
 import 'package:paymeback/screens/login.dart';
 import 'package:paymeback/screens/register.dart';
 import 'package:paymeback/screens/home.dart';
-import 'package:paymeback/screens/new-charge.dart';
+import 'package:paymeback/screens/charge_form.dart';
 
 class Routes extends StatelessWidget {
   const Routes({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class Routes extends StatelessWidget {
           'register': (context) => const RegisterScreen(),
           'home': (context) => HomeScreen(
               user: ModalRoute.of(context)!.settings.arguments as User),
-          'new-charge': (context) => const NewChargeScreen(),
+          'charge-form': (context) => const ChargeFormScreen(),
         });
   }
 }

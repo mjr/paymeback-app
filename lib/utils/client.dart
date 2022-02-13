@@ -54,4 +54,34 @@ class Client {
             headers: headers, body: jsonEncode(data))
         .then(handleResponse);
   }
+
+  Future<Map<String, dynamic>> delete(
+      String endpoint, Map<String, dynamic> data) async {
+    final String? token = await auth.getToken();
+
+    Map<String, String>? headers = {'Content-Type': 'application/json'};
+    if (token != null) {
+      headers['Authorization'] = token;
+    }
+
+    return await http
+        .delete(Uri.parse('$apiURL/$endpoint/'),
+            headers: headers, body: jsonEncode(data))
+        .then(handleResponse);
+  }
+
+  Future<Map<String, dynamic>> patch(
+      String endpoint, Map<String, dynamic> data) async {
+    final String? token = await auth.getToken();
+
+    Map<String, String>? headers = {'Content-Type': 'application/json'};
+    if (token != null) {
+      headers['Authorization'] = token;
+    }
+
+    return await http
+        .patch(Uri.parse('$apiURL/$endpoint/'),
+            headers: headers, body: jsonEncode(data))
+        .then(handleResponse);
+  }
 }

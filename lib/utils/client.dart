@@ -13,6 +13,11 @@ class Client {
       await auth.logout();
       return throw Exception({'message': 'Please re-authenticate.'});
     }
+
+    if (response.statusCode == 204) {
+      return {};
+    }
+
     final data = await jsonDecode(response.body);
     if ((response.statusCode ~/ 100) == 2) {
       return data;
@@ -51,8 +56,7 @@ class Client {
         .then(handleResponse);
   }
 
-  Future<Map<String, dynamic>> delete(
-      String endpoint, Map<String, dynamic> data) async {
+  Future<Map<String, dynamic>> delete(String endpoint) async {
     final String? token = await auth.getToken();
 
     Map<String, String>? headers = {'Content-Type': 'application/json'};
@@ -60,10 +64,10 @@ class Client {
       headers['Authorization'] = token;
     }
 
-    return await http
-        .delete(Uri.parse('$apiURL/$endpoint/'),
-            headers: headers, body: jsonEncode(data))
-        .then(handleResponse);
+    return await http.delete(
+      Uri.parse('$apiURL/$endpoint/'),
+      headers: headers
+    ).then(handleResponse);
   }
 
   Future<Map<String, dynamic>> patch(

@@ -76,10 +76,10 @@ class _ListChargesState extends State<ListChargesScreen> {
 
   void _loadCharges(ChargeFilters? loadFilters) async {
     try {
-      final Map<String, dynamic>? queryParams =
-          loadFilters?.formatForURLQuery();
+      final String queryParams = loadFilters != null ? loadFilters.formatForURLQuery() : '';
 
-      final response = await client.get('charges', queryParams);
+      final response = await client.get('charges${queryParams}');
+
       List<Charge> newCrages =
           response["results"].map<Charge>((c) => Charge.fromJson(c)).toList();
 

@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ListChargesScreen(
         user: widget.user,
       ),
-      const InsightScreen()
+      Insight()
     ];
     return screens[currentScreenIndex];
   }

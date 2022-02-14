@@ -10,6 +10,7 @@ class Charge {
   late String phoneNumber;
   late String? description;
   late bool paid;
+  late bool isLate;
 
   Charge(
       {this.id,
@@ -20,6 +21,7 @@ class Charge {
       required this.debtor,
       required this.phoneNumber,
       required this.paid,
+      required this.isLate,
       this.description});
 
   Map<String, dynamic> toMap() {
@@ -46,6 +48,7 @@ class Charge {
       phoneNumber: form['phoneNumber'],
       description: form['description'],
       paid: form['paid'] == "true",
+      isLate: form['isLate'],
     );
   }
 
@@ -60,6 +63,7 @@ class Charge {
       phoneNumber: json['debtorPhone'],
       description: json['details'],
       paid: json['paid'],
+      isLate: json['isLate'],
     );
   }
 }

@@ -23,8 +23,7 @@ class Client {
 
   final String? apiURL = dotenv.env['APP_AUTH_URL'];
 
-  Future<Map<String, dynamic>> get(
-      String endpoint, Map<String, dynamic>? queryParams) async {
+  Future<Map<String, dynamic>> get(String endpoint) async {
     final String? token = await auth.getToken();
 
     Map<String, String>? headers = {'Content-Type': 'application/json'};
@@ -32,12 +31,9 @@ class Client {
       headers['Authorization'] = token;
     }
 
-    return await http
-        .get(
-            Uri.https("api-paymeback.herokuapp.com", "/api/v1/$endpoint",
-                queryParams),
-            headers: headers)
-        .then(handleResponse);
+    return await http.get(
+      Uri.parse('$apiURL/$endpoint/'), headers: headers
+    ).then(handleResponse);
   }
 
   Future<Map<String, dynamic>> post(

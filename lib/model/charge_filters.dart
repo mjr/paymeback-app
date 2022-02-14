@@ -26,7 +26,7 @@ class ChargeFilters {
     untilValue = "";
   }
 
-  Map<String, dynamic> formatForURLQuery() {
+  String formatForURLQuery() {
     late Map<String, dynamic> query = {};
 
     if (debtor != null && debtor!.isNotEmpty) {
@@ -53,6 +53,10 @@ class ChargeFilters {
       query["date_to_receive__range"] = "$fromEndDate,$untilEndDate";
     }
 
-    return query;
+    if (query.isEmpty) {
+      return "";
+    }
+
+    return '?${Uri(queryParameters: query).query}';
   }
 }

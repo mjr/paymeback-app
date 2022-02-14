@@ -523,11 +523,15 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
     });
 
     try {
-      Function request =
-          formCharge['id'] != null && formCharge['id'].toString().isNotEmpty
-              ? client.patch
-              : client.post;
-      await request('charges', Charge.fromForm(formCharge).toMap());
+      bool isUpdate =
+          formCharge['id'] != null && formCharge['id'].toString().isNotEmpty;
+
+      if (isUpdate) {
+        await client.patch(
+            'charges/' + formCharge['id'], Charge.fromForm(formCharge).toMap());
+      } else {
+        await client.post('charges', Charge.fromForm(formCharge).toMap());
+      }
 
       final user = await auth.getUser();
       Navigator.pushReplacementNamed(context, 'home', arguments: user);

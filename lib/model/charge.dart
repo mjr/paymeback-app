@@ -48,7 +48,7 @@ class Charge {
       phoneNumber: form['phoneNumber'],
       description: form['description'],
       paid: form['paid'] == "true",
-      isLate: form['isLate'],
+      isLate: false,
     );
   }
 

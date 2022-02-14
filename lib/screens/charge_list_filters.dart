@@ -24,7 +24,6 @@ class ChargeListFilterScreen extends StatefulWidget {
 
 class _ChargeListFilterState extends State<ChargeListFilterScreen> {
   final _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
   bool _isError = false;
   late ChargeFilters _innerFilters;
 
@@ -142,39 +141,38 @@ class _ChargeListFilterState extends State<ChargeListFilterScreen> {
                           ),
                           const SizedBox(width: 8),
                           Expanded(
-                            child: MaterialButton(
-                              onPressed: () async {
-                                setState(() {
-                                  _isLoading = true;
-                                });
-                                try {
-                                  widget.updateFilters(_innerFilters);
-                                  await widget.loadCharges(_innerFilters);
-                                  Navigator.pop(context);
-                                } catch (err) {
-                                  if (kDebugMode) {
-                                    print(err);
-                                  }
-                                  setState(() {
-                                    _isError = true;
-                                    true;
-                                  });
-                                } finally {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                }
-                              },
-                              textColor: Colors.white,
-                              color: const Color(0xFF5DB075),
-                              child: Text(
-                                  _isLoading ? 'Filtrando...' : 'Filtrar',
-                                  textAlign: TextAlign.center),
-                              height: 51,
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(100))),
-                            ),
+                            child: Column(children: [
+                              MaterialButton(
+                                  onPressed: () async {
+                                    try {
+                                      widget.updateFilters(_innerFilters);
+                                      widget.loadCharges(_innerFilters);
+                                      Navigator.pop(context);
+                                    } catch (err) {
+                                      if (kDebugMode) {
+                                        print(err);
+                                      }
+                                      setState(() {
+                                        _isError = true;
+                                      });
+                                    }
+                                  },
+                                  textColor: Colors.white,
+                                  color: const Color(0xFF5DB075),
+                                  child: const Text('Filtrar',
+                                      textAlign: TextAlign.center),
+                                  height: 51,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)))),
+                              _isError
+                                  ? const Padding(
+                                      padding: EdgeInsets.only(top: 10.0),
+                                      child: Text('Ocorreu um erro',
+                                          style: TextStyle(color: Colors.red)),
+                                    )
+                                  : const SizedBox.shrink(),
+                            ]),
                           ),
                         ],
                       ),

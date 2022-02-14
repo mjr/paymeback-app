@@ -18,7 +18,7 @@ class ListChargesScreen extends StatefulWidget {
 
 class _ListChargesState extends State<ListChargesScreen> {
   final client = Client();
-  bool _isLoading = false;
+  bool _isLoading = true;
   bool _isError = false;
   List<Charge> _charges = <Charge>[];
 
@@ -56,13 +56,28 @@ class _ListChargesState extends State<ListChargesScreen> {
           ),
         ],
       )),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-        child: ListView.builder(
-            itemCount: _charges.length,
-            itemBuilder: (BuildContext context, int index) => ChargeCard(
-                  charge: _charges[index],
-                )),
+      body: Builder(
+        builder: (context) {
+          if (_isLoading) {
+            return const Material(
+                child: Center(child: CircularProgressIndicator()));
+          } else if (_isError) {
+            return const Material(
+              child: Center(
+                child: Text('Não foi possível carregar os dados',
+                    textDirection: TextDirection.ltr),
+              ),
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: ListView.builder(
+                itemCount: _charges.length,
+                itemBuilder: (BuildContext context, int index) => ChargeCard(
+                      charge: _charges[index],
+                    )),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -76,9 +91,15 @@ class _ListChargesState extends State<ListChargesScreen> {
 
   void _loadCharges(ChargeFilters? loadFilters) async {
     try {
-      final String queryParams = loadFilters != null ? loadFilters.formatForURLQuery() : '';
+      setState(() {
+        _isLoading = true;
+        _isError = false;
+      });
 
-      final response = await client.get('charges${queryParams}');
+      final String queryParams =
+          loadFilters != null ? loadFilters.formatForURLQuery() : '';
+
+      final response = await client.get('charges$queryParams');
 
       List<Charge> newCrages =
           response["results"].map<Charge>((c) => Charge.fromJson(c)).toList();

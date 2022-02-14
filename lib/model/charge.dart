@@ -10,7 +10,7 @@ class Charge {
   late String phoneNumber;
   late String? description;
   late bool paid;
-  late bool isLate;
+  late bool? isLate;
 
   Charge(
       {this.id,
@@ -21,7 +21,7 @@ class Charge {
       required this.debtor,
       required this.phoneNumber,
       required this.paid,
-      required this.isLate,
+      this.isLate,
       this.description});
 
   Map<String, dynamic> toMap() {
@@ -48,7 +48,6 @@ class Charge {
       phoneNumber: form['phoneNumber'],
       description: form['description'],
       paid: form['paid'] == "true",
-      isLate: false,
     );
   }
 

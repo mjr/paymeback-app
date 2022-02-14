@@ -345,9 +345,7 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                                       initialValue: formCharge['value'],
                                       onChanged: (value) {
                                         setState(() {
-                                          formCharge['value'] = value
-                                              .replaceAll('R\$ ', '')
-                                              .replaceAll(',', '.');
+                                          formCharge['value'] = value;
                                         });
                                       },
                                       decoration: InputDecoration(

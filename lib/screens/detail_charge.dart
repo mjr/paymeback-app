@@ -251,9 +251,7 @@ class _DetailChargeScreenState extends State<DetailChargeScreen> {
     });
 
     try {
-      await client.delete('charges', {
-        'id': widget.charge.id,
-      });
+      await client.delete('charges/${widget.charge.id}');
       final user = await auth.getUser();
       Navigator.pushReplacementNamed(context, 'home', arguments: user);
       setState(() {

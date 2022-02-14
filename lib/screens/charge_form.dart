@@ -537,7 +537,6 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
         _isError = false;
       });
     } catch (err) {
-      print(err);
       setState(() {
         _isError = true;
       });

@@ -242,15 +242,15 @@ class _DetailChargeScreenState extends State<DetailChargeScreen> {
   }
 
   void removeCharge() async {
-    if (_isLoading) return;
-
-    FocusScope.of(context).requestFocus(FocusNode());
-    setState(() {
-      _isError = false;
-      _isLoading = true;
-    });
-
     try {
+      if (_isLoading) return;
+
+      FocusScope.of(context).requestFocus(FocusNode());
+      setState(() {
+        _isError = false;
+        _isLoading = true;
+      });
+
       await client.delete('charges/${widget.charge.id}');
       final user = await auth.getUser();
       Navigator.pushReplacementNamed(context, 'home', arguments: user);
@@ -258,7 +258,6 @@ class _DetailChargeScreenState extends State<DetailChargeScreen> {
         _isError = false;
       });
     } catch (err) {
-      print(err);
       setState(() {
         _isError = true;
       });

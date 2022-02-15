@@ -1,5 +1,6 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
 String formatPhoneNumber(String phoneNumber) {
   final sanitizedNumbers = sanitizePhoneNumber(phoneNumber);
@@ -9,13 +10,18 @@ String formatPhoneNumber(String phoneNumber) {
     if (kDebugMode) {
       print(err);
     }
-    return "";
+    try {
+      return formatAsPhoneNumber(phoneNumber) ?? "";
+    } catch (e) {
+      return "";
+    }
   }
 }
 
 String sanitizePhoneNumber(String phoneNumber) {
   try {
-    return UtilBrasilFields.removeCaracteres(phoneNumber);
+    String onlyNumbers = UtilBrasilFields.removeCaracteres(phoneNumber);
+    return onlyNumbers.replaceFirst(RegExp("^[+55]{0,3}"), "");
   } catch (err) {
     if (kDebugMode) {
       print(err);

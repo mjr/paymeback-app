@@ -1,3 +1,5 @@
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:contact_picker/contact_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:paymeback/auth/provider.dart';
 import 'package:paymeback/model/charge.dart';
 import 'package:paymeback/utils/client.dart';
+import 'package:paymeback/utils/get_contact.dart';
 import 'package:paymeback/utils/masks.dart';
 
 class ChargeFormScreen extends StatefulWidget {
@@ -26,6 +29,8 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
 
   final TextEditingController _loanDateInput = TextEditingController();
   final TextEditingController _dateToReceiveInput = TextEditingController();
+  final TextEditingController _debtorInput = TextEditingController();
+  final TextEditingController _phoneNumberInput = TextEditingController();
   bool _isLoading = false;
   bool _isError = false;
 
@@ -53,6 +58,9 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
     _dateToReceiveInput.text = formCharge['endDate'] != null
         ? DateFormat('dd/MM/yyyy').format(formCharge['endDate'])
         : '';
+
+    _debtorInput.text = formCharge['debtor'] ?? '';
+    _phoneNumberInput.text = formCharge['phoneNumber'] ?? '';
 
     formCharge['startDate'] = formCharge['startDate'].toString();
     formCharge['endDate'] = formCharge['endDate'].toString();
@@ -138,10 +146,11 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        initialValue: formCharge['debtor'],
+                        controller: _debtorInput,
                         onChanged: (value) {
                           setState(() {
                             formCharge['debtor'] = value;
+                            _debtorInput.text = value;
                           });
                         },
                         decoration: InputDecoration(
@@ -164,8 +173,26 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                               width: 2.0,
                             ),
                           ),
-                          suffixIcon: const Icon(Icons.perm_contact_calendar,
-                              color: Color(0xFFBDBDBD)),
+                          suffixIcon: IconButton(
+                            icon: const Icon(Icons.perm_contact_calendar,
+                                color: Color(0xFFBDBDBD)),
+                            onPressed: () async {
+                              Contact? selectedContact =
+                                  await openContactBook();
+
+                              if (selectedContact != null) {
+                                setState(() {
+                                  formCharge['debtor'] =
+                                      selectedContact.fullName;
+                                  _debtorInput.text = selectedContact.fullName;
+                                  formCharge['phoneNumber'] = formatPhoneNumber(
+                                      selectedContact.phoneNumber.number);
+                                  _phoneNumberInput.text = formatPhoneNumber(
+                                      selectedContact.phoneNumber.number);
+                                });
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ),
@@ -394,10 +421,11 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                                       inputFormatters: [
                                         MaskedInputFormatter('(##)#####-####'),
                                       ],
-                                      initialValue: formCharge['phoneNumber'],
+                                      controller: _phoneNumberInput,
                                       onChanged: (value) {
                                         setState(() {
                                           formCharge['phoneNumber'] = value;
+                                          _phoneNumberInput.text = value;
                                         });
                                       },
                                       decoration: InputDecoration(

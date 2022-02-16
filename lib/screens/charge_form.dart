@@ -150,7 +150,6 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                         onChanged: (value) {
                           setState(() {
                             formCharge['debtor'] = value;
-                            _debtorInput.text = value;
                           });
                         },
                         decoration: InputDecoration(
@@ -218,11 +217,15 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                                       onTap: () async {
                                         DateTime? value = await showDatePicker(
                                             context: context,
-                                            initialDate:
-                                                _loanDateInput.text.isNotEmpty
-                                                    ? DateTime.parse(
-                                                        _loanDateInput.text)
-                                                    : DateTime.now(),
+                                            initialDate: formCharge['startDate']
+                                                        .isNotEmpty &&
+                                                    DateTime.tryParse(
+                                                            formCharge[
+                                                                'startDate']) !=
+                                                        null
+                                                ? DateTime.parse(
+                                                    formCharge['startDate'])
+                                                : DateTime.now(),
                                             firstDate: DateTime(2022),
                                             lastDate: DateTime(2050));
                                         if (value != null) {
@@ -288,10 +291,14 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                                       onTap: () async {
                                         DateTime? value = await showDatePicker(
                                             context: context,
-                                            initialDate: _dateToReceiveInput
-                                                    .text.isNotEmpty
+                                            initialDate: formCharge['endDate']
+                                                        .isNotEmpty &&
+                                                    DateTime.tryParse(
+                                                            formCharge[
+                                                                'endDate']) !=
+                                                        null
                                                 ? DateTime.parse(
-                                                    _dateToReceiveInput.text)
+                                                    formCharge['endDate'])
                                                 : DateTime.now(),
                                             firstDate: DateTime(2022),
                                             lastDate: DateTime(2050));
@@ -425,7 +432,6 @@ class _ChargeFormScreenState extends State<ChargeFormScreen> {
                                       onChanged: (value) {
                                         setState(() {
                                           formCharge['phoneNumber'] = value;
-                                          _phoneNumberInput.text = value;
                                         });
                                       },
                                       decoration: InputDecoration(
